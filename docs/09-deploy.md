@@ -41,16 +41,20 @@ Never put a key behind one.
 VITE_REOWN_PROJECT_ID          your Reown project id
 VITE_RPC_MAINNET               your private RPC endpoint
 VITE_RPC_FALLBACKS             https://rpc.mainnet.chain.robinhood.com
-VITE_CHAIN_ID                  4663
-VITE_EXPLORER_URL              https://robinhoodchain.blockscout.com
 VITE_PUNS_PASS_ADDRESS         0x6d050DB66e3317C810Cfe52AA8A0b52b6fA28231
 VITE_LAUNCH_FACTORY_ADDRESS    0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e
 VITE_LAUNCH_AND_BUY_ADDRESS    0xe33E9E479dF8802cb0866d5d05258bEc4cF62948
-VITE_IPFS_GATEWAY              https://gateway.pinata.cloud/ipfs/
 ```
+
+That is the whole list. Anything else has a working default compiled in, and
+adding it changes nothing.
 
 Leave `VITE_INDEXER_URL` unset. The app defaults to the function on the same
 site, which is where it will be.
+
+The chain id and the explorer are not environment variables. They live in
+`src/lib/chain.ts`, because they describe the network rather than this
+deployment.
 
 > A variable set to an empty string is not the same as one left out. The app
 > treats blank as unset now, but the clearer habit is to omit what you do not
@@ -63,11 +67,11 @@ Read by the functions, never sent to a browser.
 ```
 PINATA_JWT                     pins uploaded token images
 INDEXER_RPC_URL                the endpoint the indexer walks the chain with
-LAUNCH_FACTORY_ADDRESS         0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e
-INDEXER_LOG_CHUNK              9
-INDEXER_REQUESTS_PER_RUN       90
-INDEXER_CONCURRENCY            6
 ```
+
+Two, and both are needed. `LAUNCH_FACTORY_ADDRESS`, `INDEXER_LOG_CHUNK`,
+`INDEXER_REQUESTS_PER_RUN` and `INDEXER_CONCURRENCY` already default to the
+right values in the function, so add them only to change one.
 
 `INDEXER_LOG_CHUNK` is the provider's cap, not a preference. Nine blocks per
 request at ninety requests a minute covers 810 blocks against a chain producing
