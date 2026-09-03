@@ -47,6 +47,15 @@ export default function Explore() {
 
   const total = data?.total ?? 0;
   const hasMore = data?.hasMore ?? false;
+
+  // An index that is running but has caught nothing yet is a different thing
+  // from an empty chain, and saying "nothing has launched" when the truth is
+  // "we started looking a minute ago" is simply wrong.
+  const startedAt = data?.updatedAt ? Date.parse(data.updatedAt) : undefined;
+  const starting =
+    data?.source === "indexer" &&
+    total === 0 &&
+    (startedAt === undefined || Date.now() - startedAt < 30 * 60_000);
   const from = page * PAGE_SIZE;
 
   // Changing what the list contains should not leave the reader stranded on a
@@ -124,11 +133,13 @@ export default function Explore() {
 
       {!isLoading && !isError && rows.length === 0 && (
         <Empty
-          title="Be the first"
+          title={starting ? "Catching up" : "Be the first"}
           body={
-            onlyLive
-              ? "Every launch found has already graduated. Clear the filter to see them, or start something new."
-              : "Nothing has launched in the window this app watches. Blocks here arrive ten times a second, so that window is short by design."
+            starting
+              ? "This list is being built as new launches happen, and it started a moment ago. Give it a minute and the first ones will appear on their own."
+              : onlyLive
+                ? "Every launch found has already graduated. Clear the filter to see them, or start something new."
+                : "No launches yet. Yours would be the first."
           }
           action={
             <Link to="/app/create" className="btn btn-solid">

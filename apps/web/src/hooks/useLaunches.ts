@@ -60,6 +60,8 @@ export type LaunchPage = {
   source: "indexer" | "logs";
   /** Last block the indexer has covered, when it answered. */
   indexedFrom: number | null;
+  /** When the indexer last advanced. Null when it has never run. */
+  updatedAt: string | null;
 };
 
 type Row = {
@@ -103,6 +105,7 @@ async function fromIndexer(page: number, limit: number) {
     total: number;
     hasMore?: boolean;
     indexedFrom: number | null;
+    updatedAt: string | null;
   };
 
   const rows: Row[] = (payload.launches ?? []).map((l) => ({
@@ -119,6 +122,7 @@ async function fromIndexer(page: number, limit: number) {
     total: payload.total ?? rows.length,
     hasMore: payload.hasMore ?? false,
     indexedFrom: payload.indexedFrom ?? null,
+    updatedAt: payload.updatedAt ?? null,
   };
 }
 
@@ -264,7 +268,14 @@ export function useLaunches(page = 0, limit = 25) {
     refetchInterval: 30_000,
     queryFn: async (): Promise<LaunchPage> => {
       if (!client || !factory) {
-        return {launches: [], total: 0, hasMore: false, source: "logs", indexedFrom: null};
+        return {
+          launches: [],
+          total: 0,
+          hasMore: false,
+          source: "logs",
+          indexedFrom: null,
+          updatedAt: null,
+        };
       }
 
       try {
@@ -275,6 +286,7 @@ export function useLaunches(page = 0, limit = 25) {
           hasMore: indexed.hasMore,
           source: "indexer",
           indexedFrom: indexed.indexedFrom,
+          updatedAt: indexed.updatedAt,
         };
       } catch {
         // No indexer deployed yet, or it is unreachable. Scan directly and
@@ -287,6 +299,7 @@ export function useLaunches(page = 0, limit = 25) {
           hasMore: (page + 1) * limit < rows.length,
           source: "logs",
           indexedFrom: null,
+          updatedAt: null,
         };
       }
     },
