@@ -1,0 +1,30 @@
+{
+  "name": "puns",
+  "private": true,
+  "version": "0.0.0",
+  "description": "A meme-first token launchpad on Robinhood Chain",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:contracts": "pnpm --filter @puns/contracts test",
+    "db:migrate": "pnpm --filter @puns/db migrate",
+    "fork": "anvil --fork-url http://127.0.0.1:8546 --port 8545",
+    "rpc:proxy": "node tools/rpc-proxy.mjs",
+    "deploy:dry": "pnpm --filter @puns/contracts deploy:dry",
+    "deploy:mainnet": "pnpm --filter @puns/contracts deploy:mainnet",
+    "repeg": "node tools/repeg.mjs",
+    "repeg:dry": "node tools/repeg.mjs --dry-run"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0",
+    "prettier": "^3.4.0"
+  }
+}

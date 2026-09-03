@@ -1,0 +1,26 @@
+node_modules/
+.next/
+dist/
+out/
+.turbo/
+coverage/
+
+# Foundry
+packages/contracts/cache/
+packages/contracts/out/
+packages/contracts/broadcast/
+packages/contracts/lib/
+
+# Environment - never commit a key
+.env
+.env.local
+.env.*.local
+
+# Local chain
+anvil.log
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+.indexer/

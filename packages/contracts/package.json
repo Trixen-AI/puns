@@ -1,0 +1,20 @@
+{
+  "name": "@puns/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Puns contracts. PunsPass and future Puns-authored contracts.",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "test:gas": "forge test --gas-report",
+    "fmt": "forge fmt",
+    "lint": "forge fmt --check",
+    "typecheck": "forge build --sizes",
+    "deploy:dry": "forge script script/DeployPunsPass.s.sol --rpc-url http://127.0.0.1:8545",
+    "deploy:fork": "forge script script/DeployPunsPass.s.sol --rpc-url http://127.0.0.1:8545 --broadcast",
+    "deploy:mainnet": "forge script script/DeployPunsPass.s.sol --rpc-url $RPC_MAINNET --broadcast"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.1.0"
+  }
+}

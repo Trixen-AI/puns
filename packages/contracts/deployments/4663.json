@@ -1,0 +1,83 @@
+{
+  "chainId": 4663,
+  "chainName": "Robinhood Chain",
+  "deployedAt": "2026-09-04",
+  "contracts": {
+    "PunsPass": "0x6d050DB66e3317C810Cfe52AA8A0b52b6fA28231"
+  },
+  "owner": "0xE1D78A6f24380cF7caDBB163ce2a598821631B67",
+  "treasury": "0xf0099f6D992DfbBF87343317D929AE98b9472C13",
+  "pricer": "0xE1D78A6f24380cF7caDBB163ce2a598821631B67",
+  "baseUri": "https://punsfun.app/pass/",
+  "terms": {
+    "Creator": {
+      "priceWei": "4000000000000000",
+      "priceEth": "0.004",
+      "durationSeconds": 0,
+      "lifetime": true,
+      "usdCents": 1000
+    },
+    "Pro": {
+      "priceWei": "3200000000000000",
+      "priceEth": "0.0032",
+      "durationSeconds": 2592000,
+      "lifetime": false,
+      "usdCents": 800
+    }
+  },
+  "totalGasUsed": 3541490,
+  "transactions": [
+    {
+      "type": "CREATE",
+      "contract": "PunsPass",
+      "address": "0x6d050db66e3317c810cfe52aa8a0b52b6fa28231",
+      "function": null,
+      "hash": "0x2e586a7b37498e92bfe17207b6decb4252b2b610d094fc73f283e8a746d09369"
+    },
+    {
+      "type": "CALL",
+      "contract": "PunsPass",
+      "address": "0x6d050db66e3317c810cfe52aa8a0b52b6fa28231",
+      "function": "setTerms(uint8,uint256,uint64,uint32)",
+      "hash": "0x58b13719a70712fc0a0516e217037ab5a05f26d7ee7fa680bdbcecf85fd85733"
+    },
+    {
+      "type": "CALL",
+      "contract": "PunsPass",
+      "address": "0x6d050db66e3317c810cfe52aa8a0b52b6fa28231",
+      "function": "setTerms(uint8,uint256,uint64,uint32)",
+      "hash": "0x4c23c8bed1333cd9b564c4c30e9048deede1923bb7a71fdc0ae1c2ab37c2301d"
+    },
+    {
+      "type": "CALL",
+      "contract": "PunsPass",
+      "address": "0x6d050DB66e3317C810Cfe52AA8A0b52b6fA28231",
+      "function": "setPricer(address)",
+      "hash": "0xc6fd26895feb4447000475b44fce48cbe7c89ba13e1b0660c69c69c60a506426"
+    },
+    {
+      "type": "CALL",
+      "contract": "PunsPass",
+      "address": "0x6d050DB66e3317C810Cfe52AA8A0b52b6fA28231",
+      "function": "setPricer(address) -> owner wallet",
+      "hash": "0x8f4e3303d03fdfd2839dac81e0201bfe75252de9586ea8fb35268b510266fc59"
+    }
+  ],
+  "explorer": "https://robinscan.io/address/0x6d050DB66e3317C810Cfe52AA8A0b52b6fA28231",
+  "verification": {
+    "status": "verified",
+    "date": "2026-09-04",
+    "explorer": "https://robinhoodchain.blockscout.com/address/0x6d050DB66e3317C810Cfe52AA8A0b52b6fA28231",
+    "match": "partial",
+    "matchNote": "Partial rather than full because foundry.toml sets bytecodeHash = none, so there is no metadata hash for the verifier to compare. Source, ABI, compiler settings and constructor arguments all match.",
+    "compiler": "v0.8.28+commit.7893614a",
+    "evmVersion": "cancun",
+    "optimizer": {
+      "enabled": true,
+      "runs": 1000000
+    },
+    "method": "Blockscout Standard JSON Input, manual via browser",
+    "package": "packages/contracts/verification/"
+  },
+  "pricerNote": "Set to the owner/deployer wallet at the maintainer's explicit direction. The owner could already call repeg, so the on-chain effect of this transaction was to revoke the previously generated dedicated pricer wallet. The separate-key protection the pricer role was designed to provide is therefore not in use: the scheduled repeg job runs with the owner key."
+}
