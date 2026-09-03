@@ -1,4 +1,16 @@
+# Netlify configuration for the whole repository.
+#
+# It lives at the root rather than beside the app because `base` has to be
+# resolved before anything else. With the file inside apps/web, Netlify found
+# it but still resolved `publish` and the build command against the repository
+# root: it built the monorepo with turbo, which tried to compile the contracts
+# with Foundry, which does not exist on a Netlify builder and does not need to.
+#
+# With `base` set here, Netlify changes into apps/web first and every other
+# path below is relative to it.
+
 [build]
+  base = "apps/web"
   command = "npm run build"
   publish = "dist"
   functions = "netlify/functions"
@@ -9,20 +21,16 @@
 # ---------------------------------------------------------------------------
 # Domain
 # ---------------------------------------------------------------------------
-# punsfun.app is the canonical address. Set it as the primary domain in the
-# Netlify UI as well; these rules make every other address agree with it.
-#
-# Without them the same site answers on three names, and search engines, wallet
-# origin checks and the Reown allow-list each see a different one.
+# punsfun.app is canonical. Set it as the primary domain in the Netlify UI as
+# well; these rules make every other address agree with it, so search engines,
+# wallet origin checks and the Reown allow-list all see the same name.
 
-# www to the apex, permanently.
 [[redirects]]
   from = "https://www.punsfun.app/*"
   to = "https://punsfun.app/:splat"
   status = 301
   force = true
 
-# Netlify's own subdomain should not serve the site as if it were the product.
 [[redirects]]
   from = "https://puns.netlify.app/*"
   to = "https://punsfun.app/:splat"
@@ -32,13 +40,10 @@
 # ---------------------------------------------------------------------------
 # Routing
 # ---------------------------------------------------------------------------
-# Functions first: the single-page rewrite below would otherwise swallow them.
-[[redirects]]
-  from = "/.netlify/functions/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+# Functions are routed by Netlify itself and a rule for them is rejected, so
+# there is none here. Everything else is a single-page app: any path the
+# filesystem does not answer belongs to the router.
 
-# Every other route is handled by the app, not the filesystem.
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -67,6 +72,3 @@
   for = "/index.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
-
-# The indexer's schedule is declared in the function itself, beside the code it
-# governs, so the two cannot drift apart.
